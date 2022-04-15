@@ -57,10 +57,10 @@ if (!message.content.startsWith(config.prefix)) return;
 const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 const command = args.shift();
 
-
+let user = await message.channel.fetchOwner();
 if (message.channel.type.includes("THREAD")) {
 if (message.channel.name.includes("[Обсуждение]") || message.channel.name.includes("[Архив]")) {
-    if (command == "admin") {
+    if (command == "admin" || user.roles.cache.find(role => role.id == config.adminID)) {
         const button1 = new MessageButton()
             .setLabel("Архив")
             .setStyle("PRIMARY")
@@ -82,7 +82,7 @@ if (message.channel.name.includes("[Обсуждение]") || message.channel.n
                 content: `${message.author}`,
                 components: [buttons]
             });
-            var user = await message.channel.fetchOwner();
+            // var user = await message.channel.fetchOwner();
 
             const filter = (i) =>
                 (i.customId === "delete" || i.customId === "archive") 
